@@ -47,6 +47,7 @@ workflow, with almost no weight.
 - [Repository structure](#repository-structure)
 - [Credits](#credits)
 - [License](#license)
+- [Perlite vs claude-obsidian](#perlite-vs-claude-obsidian)
 
 ## Why Perlite
 
@@ -553,3 +554,64 @@ Developed by **[Boz](https://github.com/bozdev)**.
 ## License
 
 [MIT](LICENSE) © 2026 Boz
+
+## Perlite vs claude-obsidian
+
+[Perlite](https://github.com/bozdev/perlite) started from the same idea as
+[claude-obsidian](https://github.com/AgriciDaniel/claude-obsidian) and uses a
+similar vault layout, but makes the opposite engineering trade-off: as little
+machinery as possible, so it runs anywhere Claude Code runs, including native
+Windows. This comparison reflects Perlite 0.1.0 and claude-obsidian 2.2.0
+(commit `b0d8867`), as of October 2026.
+
+### At a glance
+
+| | [Perlite](https://github.com/bozdev/perlite) | [claude-obsidian](https://github.com/AgriciDaniel/claude-obsidian) |
+|---|---|---|
+| **Design goal** | Lightweight, Windows-native, readable | Maximum safety, provenance and portability across agent hosts |
+| **Size** | 18 files: 5 skills, 5 templates, ~180 lines of optional Python | ~200 files: 15 skills, ~23,600 lines of Python and ~1,300 lines of shell, plus ~19,000 lines of tests |
+| **How notes are written** | Claude Code's own Read, Write and Edit tools | Through its own Python transaction core; skills forbid direct Write/Edit |
+| **Windows** | Fully supported natively | Native Windows is read-only; writing to the vault requires WSL |
+| **Runtime requirements** | None (Python 3.8+ optional, for lint only) | Python 3.11+, Bash for setup scripts, WSL on Windows |
+| **Hooks** | None | `SessionStart` and `Stop` hooks (need `python3` on PATH) |
+| **Rules live in** | One editable `PERLITE.md` in the vault | Skills, `WIKI.md`, and executable contracts in the plugin |
+| **Undo / rollback** | None built in; rely on Obsidian File recovery or Git | Recoverable transactions with journals, locks and approval hashes |
+| **Provenance** | Claims link to source notes; conflicts and unsourced claims are marked | Separate JSON source and claim ledgers with authority, freshness and review state |
+| **Approval flow** | Claude Code's normal permission prompts | Dry-run plan, then apply with the exact `approved_plan_sha256` |
+| **Search** | Claude reads the index and searches notes with Grep | BM25 index, contextual prefixes, optional Ollama reranking |
+| **Network** | None unless you ask to fetch a URL | Off by default; opt-in flags for Anthropic API, remote Ollama and web research |
+| **Supported hosts** | Claude Code (CLI and desktop Code tab) | Claude Code, plus Codex, OpenCode, Gemini, Cursor, Windsurf and ZCode via skill links |
+
+### Feature map
+
+| Capability | [Perlite](https://github.com/bozdev/perlite) | [claude-obsidian](https://github.com/AgriciDaniel/claude-obsidian) |
+|---|---|---|
+| Set up or adopt a vault | `/perlite:init` | `wiki` |
+| Ingest sources from an inbox | `/perlite:ingest` | `wiki-ingest` (with capture plan/apply) |
+| Answer from the vault | `/perlite:query` | `wiki-query` |
+| Save from the conversation | `/perlite:save` | `save` |
+| Health check | `/perlite:lint` | `wiki-lint` |
+| Hybrid retrieval index | — | `wiki-retrieve` |
+| Autonomous web research | — (ingest can fetch a URL you approve) | `autoresearch` |
+| Web page cleanup | — | `defuddle` |
+| Canvas authoring | A `wiki/canvases/` folder; no dedicated skill | `canvas` |
+| Obsidian Bases authoring | Works with Bases through standard properties; no dedicated skill | `obsidian-bases` |
+| Methodology modes (PARA, LYT, Zettelkasten) | — (edit `PERLITE.md` to define your own conventions) | `wiki-mode` |
+| Log rollups | — | `wiki-fold` |
+| Obsidian CLI transport | — | `wiki-cli` |
+| Structured reasoning helper | — | `think` |
+
+### Which one should you use?
+
+**Choose [Perlite](https://github.com/bozdev/perlite) if** you are on Windows and do
+not want WSL, you want to read and change every rule in plain Markdown, you prefer
+no hooks and no background code, or you want a small tool you can audit in a few
+minutes.
+
+**Choose [claude-obsidian](https://github.com/AgriciDaniel/claude-obsidian) if** you
+work on macOS, Linux or WSL and want transactional writes with rollback, formal
+source and claim ledgers, a retrieval index, autonomous research, or the same skills
+across several agent hosts.
+
+Both keep your knowledge as plain Markdown in a folder you own, so a vault built with
+one stays readable without either.
