@@ -1,0 +1,25 @@
+{
+  "name": "bozdev",
+  "owner": {
+    "name": "Boz",
+    "url": "https://github.com/bozdev"
+  },
+  "metadata": {
+    "description": "Claude Code plugins by Boz."
+  },
+  "plugins": [
+    {
+      "name": "perlite",
+      "source": "./",
+      "description": "Lightweight, Windows-native Obsidian knowledge base for Claude Code. Turns sources into linked, source-cited Markdown notes using only skills.",
+      "author": {
+        "name": "Boz",
+        "url": "https://github.com/bozdev"
+      },
+      "homepage": "https://github.com/bozdev/perlite",
+      "repository": "https://github.com/bozdev/perlite",
+      "license": "MIT",
+      "category": "productivity"
+    }
+  ]
+}

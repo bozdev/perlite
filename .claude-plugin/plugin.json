@@ -1,0 +1,25 @@
+{
+  "name": "perlite",
+  "displayName": "Perlite",
+  "version": "0.1.0",
+  "description": "Lightweight, Windows-native Obsidian knowledge base for Claude Code. Drop sources into an inbox and Claude turns them into linked, source-cited Markdown notes in your vault. Pure skills: no hooks, no background processes, no network calls, no WSL.",
+  "author": {
+    "name": "Boz",
+    "url": "https://github.com/bozdev"
+  },
+  "homepage": "https://github.com/bozdev/perlite",
+  "repository": "https://github.com/bozdev/perlite",
+  "license": "MIT",
+  "keywords": [
+    "obsidian",
+    "knowledge-base",
+    "wiki",
+    "second-brain",
+    "pkm",
+    "markdown",
+    "notes",
+    "windows",
+    "lightweight",
+    "llm-wiki"
+  ]
+}
